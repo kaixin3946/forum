@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>仿新浪登录页</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script id="isRegist" type="text/template"></script>
+    <style>
+        .lg{width: 100%;}
+        .show{display: block;}
+        .hide{display: none;}
+    </style>
+</head>
+<body>
+<!--<div class="container-fluid"></div> /.container-fluid -->
+<%- include nav %>
+
+
+<ul class="nav nav-tabs">
+
+    <li role="presentation" class="btn">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+            登录
+        </a>
+    </li>
+    <li role="presentation" class="btn">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+            注册
+        </a>
+    </li>
+</ul>
+
+<div class="lg show">
+    <form action="" method="get" class="col-sm-6">
+        <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1">用户名</span>
+            <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1" name="username" id="name1">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon" id="  ">密码</span>
+            <input type="password" class="form-control" placeholder="password" aria-describedby="basic-addon1" name="pwd" id="pwd1">
+        </div>
+        <div class="input-group">
+            <input type="button" class="form-control" value="登录" aria-describedby="basic-addon1" id="denglu">
+        </div>
+    </form>
+</div>
+<div class="lg hide">
+    <form action="" method="get" class="col-sm-6">
+        <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1">用户名</span>
+            <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1" name="username" id="name2">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon" id="  ">密码</span>
+            <input type="password" class="form-control" placeholder="password" aria-describedby="basic-addon1" name="pwd" id="pwd2">
+        </div>
+        <div class="input-group">
+            <input type="button" class="form-control" value="注册" aria-describedby="basic-addon1" id="zhuce">
+        </div>
+    </form>
+</div>
+
+
+
+<div id="registToast">
+
+</div>
+<br><br><br><br>
+
+<div style="display: block;clear: both;margin-top: 20px"></div>
+<div class="panel panel-default col-sm-6">
+    <!-- Default panel contents -->
+    <div class="panel-heading">注册列表</div>
+    <!-- Table -->
+    <table class="table">
+        <% for(var i=0;i<userList.length;i++){ %>
+            <tr>
+                <td>用户名：<span><%=  userList[i].username  %></span> </td>
+                <td>密码：<span><%=  userList[i].pwd  %></span></td>
+            </tr>
+        <% } %>
+    </table>
+</div>
+
+<%- include nav-foot.ejs %>
+<script>
+$(function(){
+    //如果注册成功
+    $(".btn").eq(0).click(function(){
+        $(".lg").eq(1).removeClass("show");
+        $(".lg").eq(1).addClass("hide");
+        $(".lg").eq(0).addClass("show");
+        $(".lg").eq(0).removeClass("hide");
+    })
+    $(".btn").eq(1).click(function(){
+        $(".lg").eq(0).removeClass("show");
+        $(".lg").eq(0).addClass("hide");
+        $(".lg").eq(1).addClass("show");
+        $(".lg").eq(1).removeClass("hide");
+    })
+
+    //Ajax提交表单   登录
+   $("#denglu").click(function () {
+        $.get("/userlogin", {
+            "username": $("#name1").val(),
+            "pwd": $("#pwd1").val()
+        }, function (result) {
+            var html;
+            if (result.result == -1) {
+                html='<div class="alert alert-danger" role="alert" style="clear:both"><a href="#" class="alert-link">登录失败</a></div>';
+            } else if (result.result == 1) {
+                //提交成功
+                html='<div class="alert alert-success" role="alert" style="clear:both"><a href="#" class="alert-link">登录成功</a></div>';
+            }else if(result.result == 0){
+                html='<div class="alert alert-success" role="alert" style="clear:both"><a href="#" class="alert-link">用户名不存在</a></div>';
+            }
+
+            $("#registToast").html(html);
+        });
+    });
+
+    $("#zhuce").click(function () {
+        $.get("/userregist", {
+            "username": $("#name2").val(),
+            "pwd": $("#pwd2").val()
+        }, function (result) {
+            var html;
+            if (result.result == -1) {
+                html='<div class="alert alert-danger" role="alert" style="clear:both"><a href="#" class="alert-link">注册失败</a></div>';
+
+            } else if (result.result == 1) {
+                //提交成功
+                html='<div class="alert alert-success" role="alert" style="clear:both"><a href="#" class="alert-link">注册成功</a></div>';
+
+            }else if(result.result == 0){
+                html='<div class="alert alert-success" role="alert" style="clear:both"><a href="#" class="alert-link">用户已经被注册，换个账号</a></div>';
+            }
+
+            $("#registToast").html(html);
+        });
+    });
+})
+</script>
+</body>
+</html>

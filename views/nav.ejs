@@ -1,0 +1,61 @@
+<link rel="stylesheet" href="css/bootstrap.min.css"/>
+<link rel="stylesheet" href="css/main.css"/>
+<script src="js/react.js"></script>
+<script src="js/react-dom.js"></script>
+<script src="js/browser.min.js"></script>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <a class="navbar-brand logo" href="#">
+                <img src="img/byrlogo.gif" alt=""/>
+            </a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="index">首页 <span class="sr-only">(current)</span></a></li>
+                <!--<li ><a href="visit" >展示</a></li>-->
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div id="context">
+    <div class="l-side">
+        <div class="self-info">
+            <h5>
+                <div></div><%if(username!=null){%>
+                     <span><a href="#"><span id=""><span > 欢迎你， <%= username %> </span></span></a></span>
+                <%}else{%>
+                    <span><a href="login">登录</a></span>
+                <%}%>
+            </h5>
+            <ul>
+                <li>我的收件箱</li>
+                <li>@我的文章</li>
+                <li>回复我的文章</li>
+                <li>我的收藏夹</li>
+                <li>退出登录</li>
+            </ul>
+        </div>
+        <div class="all-talk">
+            <ul>
+                <li><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 全部讨论区</li>
+                <li><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 我的收藏夹</li>
+                <li><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 控制版面</li>
+            </ul>
+        </div>
+    </div>
+    <div class="r-side">
+<script type="text/babel">
+
+    /*
+    ReactDOM.render(
+        <span > 欢迎你， 丽丽 </span>,
+        document.getElementById('username')
+    );*/
+</script>

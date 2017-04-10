@@ -1,0 +1,34 @@
+/*index*/
+
+@mixin border-radius($num){
+  -webkit-border-radius: $num;
+  -moz-border-radius: $num;
+  border-radius: $num;
+}
+@mixin border-radius-half($lt,$rt,$rb,$lb){
+  -webkit-border-radius: $lt $rt $rb $lb;
+  -moz-border-radius: $lt $rt $rb $lb;
+  border-radius: $lt $rt $rb $lb;
+}
+#context{
+  .r-side{
+    .blocks{
+      flex: 1;
+    }
+
+    .block-content{
+      width:98%;background-color: #00d4b4;margin: 0px 1% 0 1%;display: inline-block;
+      @include border-radius(8px);
+
+      .title{
+        height: 30px;background-color: #0b97c4;line-height: 30px;
+        @include border-radius-half(5px,5px,0,0);
+      }
+      .block-inside{
+        ul li{
+          height: 20px
+        }
+      }
+    }
+  }
+}
