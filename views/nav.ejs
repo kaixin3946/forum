@@ -39,7 +39,7 @@
                 <li>@我的文章</li>
                 <li>回复我的文章</li>
                 <li>我的收藏夹</li>
-                <li>退出登录</li>
+                <li><a href="#" id="outLogin">退出登录</a></li>
             </ul>
         </div>
         <div class="all-talk">
@@ -51,6 +51,7 @@
         </div>
     </div>
     <div class="r-side">
+<!--
 <script type="text/babel">
 
     /*
@@ -58,4 +59,21 @@
         <span > 欢迎你， 丽丽 </span>,
         document.getElementById('username')
     );*/
-</script>
+</script>-->
+ <script src="js/jquery-2.1.4.min.js"></script>
+ <script>
+     $(function(){
+         $("#outLogin").click(function(){
+             var result = confirm('是否退出登录？');
+             if(result){
+                 $.get("/outLogin",function(data){
+                     if(data.success){
+                         setTimeout(function(){
+                             location.reload();
+                         },500)
+                     }
+                 })
+             }
+         })
+     })
+ </script>

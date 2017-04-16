@@ -18,11 +18,11 @@ app.set("view engine","ejs");
 app.use(express.static('./public'));
 
 app.get("/",function(req,res){
-    res.render("index",{layout:"nav",page:"首页","username":null});
+    res.render("index",{layout:"nav",page:"首页","username":req.session.username});
 });
 
 app.get("/index",function(req,res){
-    res.render("index",{layout:"nav",page:"首页","username":null});
+    res.render("index",{layout:"nav",page:"首页","username":req.session.username});
 });
 
 
@@ -78,15 +78,15 @@ app.get("/userregist",function(req,res){                /* 注册 */
             console.log("查询出错");
         };
 
-        console.log("result:"+result);
+        //console.log("result:"+result);
         if(result.length==0){
             db.insertOne("userpwd",json1,function(err,result){              //这个json1是json数组
                 if(err) {
-                    console.log("没有存入数据库");
+                    //console.log("没有存入数据库");
                     res.send({"result":-1});
                 };
 
-                console.log("已经存入数据库");
+                //console.log("已经存入数据库");
                 req.session.login="1";
                 req.session.username=username;
                 res.send({"result":1,"username":username});
@@ -94,11 +94,38 @@ app.get("/userregist",function(req,res){                /* 注册 */
         }else{
             res.send({"result":0});
         }
-
-
     })
+});
+
+app.get("/outLogin",function(req,res){                            /* 退出登录 */
+    //从数据库提取
+    req.session.login="0";
+    req.session.username=null;
+    res.send({success:true});
+});
 
 
+app.get("/social/list",function(req,res){                            /* 信息社会  social/list*/
+    //从数据库提取
+
+    var blockNum=parseInt(req.query.blockNum);
+    db.find("social",{"blockNum":blockNum},function(err,result){
+
+        if(err) {
+            console.log("查询出错");
+        };
+        console.log(result);
+
+        if(result.length==0){
+            res.send({"result":0});
+        }else{
+            console.log("返回");
+            res.send({"result":result[0]});
+        }
+    })
+});
+app.get("/articleList",function(req,res){                                               /*  这个接口是有先后关系的,不然上一个返回来不能进入这个页面里 */
+    res.render("articleList",{layout:"nav","username":req.session.username,page:"文章列表"});
 });
 
 app.get("/visit",function(req,res){

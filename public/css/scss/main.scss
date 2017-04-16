@@ -47,6 +47,12 @@ $green:#00CD01;
         margin-top: 10px;
         li{
           width: 100%;height: 22px;line-height: 22px;
+          a{
+            color: inherit;
+            &:hover{
+              text-decoration: no-underline;
+            }
+          }
         }
       }
     }

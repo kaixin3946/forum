@@ -1,4 +1,9 @@
-/*index*/
+/* index style
+    editionList style
+*/
+$blue:#016BD1;
+$black:#333333;
+$gray-border:#CCCCCC;
 
 @mixin border-radius($num){
   -webkit-border-radius: $num;
@@ -14,19 +19,33 @@
   .r-side{
     .blocks{
       flex: 1;
+      width: 33%;
     }
 
     .block-content{
-      width:98%;background-color: #00d4b4;margin: 0px 1% 0 1%;display: inline-block;
+      width:98%;margin: 0px 1% 0 1%;display: inline-block;
+      border: 1px solid $gray-border;
       @include border-radius(8px);
 
       .title{
-        height: 30px;background-color: #0b97c4;line-height: 30px;
+        height: 30px;background-color: #99CCFF;line-height: 30px;
         @include border-radius-half(5px,5px,0,0);
       }
       .block-inside{
-        ul li{
-          height: 20px
+        width: 100%;
+        .info-line {
+          width: 100%;
+          li{
+            width: 100%;
+            height: 20px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            a:nth-child(2){
+              color: $black;cursor: pointer;
+            }
+          }
+
         }
       }
     }

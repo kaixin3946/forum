@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>仿byr首页</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/index.css"/>
+    <script src="js/bootstrap.min.js"></script>
+    <style>
+        #context .r-side{display: flex;}
+
+    </style>
+</head>
+<body>
+<%- include nav %>
+
+<!--这是<%=  page  %>-->
+<div class="blocks">
+
+</div>
+<%- include nav-foot.ejs %>
+<script>
+    $(function(){
+        $("#zhichang a").eq(0).click(function(){
+            var url="zhichang_list"
+            $.get(url,function(res){
+
+            })
+        })
+    })
+</script>
+
+
+
+</body>
+</html>
