@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>仿byr首页</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/index.css"/>
+    <link rel="stylesheet" type="text/css" href="css/dist/css/wangEditor.min.css">
+    <script src="js/bootstrap.min.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+<%- include nav %>
+
+<div id="newTopic">
+    <ol id="navPath" class="breadcrumb">
+        <li><a href="index">糖糖论坛</a></li>
+        <li><a href="#"><%= catalog1 %></a></li>
+        <li><a href="articleList?blockNum=<%= blockNum %>"><%= catalog2  %></a></li>
+        <li class="active">新话题</li>
+    </ol>
+    <div class="online">新主题</div>
+    <table>
+        <tr>
+            <td class="nt_title">标题</td>
+        </tr>
+        <tr>
+            <td class="nt_content"><input type="text" id="topic_title" value="<% if(!isTopic){ %>Re:<%= title %><%}%>" /></td>
+        </tr>
+        <tr>
+            <td class="nt_title">关键字</td>
+        </tr>
+        <tr <% if(!isTopic){ %>class="hide"<%}%>>
+            <td class="nt_content">
+                <button type="button" class="btn btn-default" aria-label="Left Align">问题</button>
+                <button type="button" class="btn btn-default" aria-label="Left Align">建议</button>
+                <button type="button" class="btn btn-default" aria-label="Left Align">讨论</button>
+                <button type="button" class="btn btn-default" aria-label="Left Align">心得</button>
+                <button type="button" class="btn btn-default" aria-label="Left Align">公告</button>
+            </td>
+        </tr>
+        <tr>
+            <td class="nt_title">文件上传</td>
+        </tr>
+        <tr>
+            <td class="nt_content"><input type="file" /></td>
+        </tr>
+        <tr>
+            <td class="nt_title">内容</td>
+        </tr>
+        <tr>
+            <td class="nt_content"><div id="ueditor"><p>请输入内容...</p></div></td>
+        </tr>
+    </table>
+    <div class="nt_btns">
+        <button id="publish" type="button" class="btn btn-info <% if(!isTopic){ %>hide<%}%>" aria-label="Left Align">发表</button>
+        <button id="reply" type="button" class="btn btn-info <% if(isTopic){ %>hide<%}%>" aria-label="Left Align">回复</button>
+        <button type="button" class="btn btn-info" aria-label="Left Align">预览</button>
+    </div>
+
+
+</div>
+<%- include nav-foot.ejs %>
+<script type="text/javascript" src="/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="css/dist/js/wangEditor.min.js"></script>
+<script>
+    $(function(){
+        var ueditor=$("#ueditor");
+        var editor = new wangEditor(ueditor);
+        editor.create();
+
+        for(var i=0;i<5;i++){
+            $(".btn-default").eq(i).click(function(){
+                $(this).siblings().removeClass("onState");
+                $(this).addClass("onState");
+            })
+        }
+
+        var blockNum =GetQueryString("blockNum");
+
+        //新话题
+        $("#publish").click(function(){
+            var  title=$("#topic_title").val();
+            var state=$(".onState").text();
+            var content=ueditor.find("p").eq(0).text();
+            var username=$("#userName").text().length>2?$("#userName").text().substring(5):null;
+
+            if(username==null){
+                var results=confirm("登录后才能评论");
+                if(confirm){
+                    location.href="login";
+                }else{  }
+            }else if(title==""){
+                alert("标题不能为空");
+            }else{
+                $.ajax({
+                    url:"/social/newTopic",
+                    type:"get",
+                    data:{
+                        "blockNum":blockNum,
+                        "title":title,
+                        "state":state,
+                        "content":content,
+                        "username":username
+                    },
+                    success:function(data){
+                        //alert(data.result);
+                        location.href="articleList?blockNum="+blockNum;             //发布新话题对应首页要更新
+                    },
+                    error:function(){
+                        alert("err");
+                    }
+                });
+            }
+        });
+
+
+        //回复
+        $("#reply").click(function(){
+            var  title=$("#topic_title").val();
+            var state=$(".onState").text();
+            var content=ueditor.find("p").eq(0).text();
+            var username=$("#userName").text().length>2?$("#userName").text().substring(5):null;
+            var rid=parseInt(GetQueryString("rid"));
+
+            if(username==null){
+                var results=confirm("登录后才能回复");
+                if(confirm){
+                    location.href="login";
+                }else{  }
+            }else if(title==""){
+                alert("标题不能为空");
+            }else{
+                $.ajax({
+                    url:"/social/reply",
+                    type:"post",
+                    data:{
+                        "blockNum":blockNum,
+                        "title":title,
+                        "state":state,
+                        "content":content,
+                        "username":username,
+                        "rid":rid
+                    },
+                    success:function(data){
+                        if(data.result==1){
+                            location.href="articleContent?blockNum="+blockNum+"&rid="+rid;
+                        }else{
+                            alert("回复失败");
+                        }
+
+                    },
+                    error:function(XMLHttpRequest, textStatus, errorThrown){
+                        console.log(XMLHttpRequest.status);
+                        console.log(XMLHttpRequest.readyState);
+                        console.log(textStatus);
+                    }
+                });
+            }
+        })
+    })
+</script>
+
+
+
+</body>
+</html>

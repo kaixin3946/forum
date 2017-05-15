@@ -1,12 +1,15 @@
-<!DOCTYPE html>
+<!DOCTYPE html><!-- 这是话题文章列表  -->
 <html>
 <head lang="en">
     <meta charset="UTF-8">
     <title>仿byr首页</title>
     <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/index.css"/>
     <script src="js/jquery-2.1.4.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script id="isRegist" type="text/template"></script>
+    <script src="js/react.js"></script>
+    <script src="js/react-dom.js"></script>
+    <script src="js/browser.min.js"></script>
     <style>
         .lg{width: 100%;}
         .show{display: block;}
@@ -17,13 +20,147 @@
 <!--<div class="container-fluid"></div> /.container-fluid -->
 <%- include nav %>
 
-<div>5555555555555</div>
+<div id="articleList">
+    <ol id="navPath" class="breadcrumb">
+        <li><a href="index">糖糖论坛</a></li>
+        <li><a href="#"><%= catalog1 %></a></li>
+        <li><a href="#"><%= catalog2  %></a></li>
+        <li class="active">文章列表</li>
+    </ol>
+    <button id="" type="button" class="btn btn-default" aria-label="Left Align">
+        <!--<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>新话题-->
+        <a href="newTopic?blockNum=<%=blockNum%>&isTopic=1"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>新话题</a>
+    </button>
+    <div class="online">当前有000000人在线</div>
+    <div id="listContent">
+        <!--<table>
+            <tr >
+                <td>状态</td>
+                <td>主题</td>
+                <td>发帖时间</td>
+                <td>作者</td>
+                <td>回复</td>
+                <td>最新回复</td>
+                <td>作者</td>
+            </tr>
+            <tr>
+                <td><img src="" alt=""/></td>
+                <td>pm考研和职业发展求支招>~<</td>
+                <td>	09:46:55</td>
+                <td>sukioosuke</td>
+                <td>3</td>
+                <td>17:39:39</td>
+                <td>sukioosuke</td>
+            </tr>
+        </table>-->
+    </div>
 
+</div>
 
 
 <%- include nav-foot.ejs %>
+<script type="text/babel">
+
+var List=React.createClass({
+    getInitialState: function() {
+        return {lists: [{}]};
+    },
+    propTypes:{
+        name:React.PropTypes.string.isRequired
+    },
+    componentDidMount: function(){
+
+            var self = this;
+            var blockNum=GetQueryString("blockNum");
+
+            // 从node服务中获取图片列表
+            console.log("ajax执行")
+            $.ajax({
+                url:"/social/articleList",
+                type:"get",
+                data:{
+                    "blockNum":blockNum
+                },
+                success:function(data){
+
+                    // 更新组件状态，这会触发一次render，此处只更新Pictures数组，不会删除favorites数组
+                    self.setState({lists: data.result });
+                },
+                error:function(){
+                    alert("err");
+                }
+            });
+
+        },
+
+    render:function(){
+        function formatDate(date){
+            var a=new Date(date);
+            var y=a.getFullYear();
+            var m=a.getMonth()+1;
+            var d=a.getDate();
+
+            return y+"-"+m+"-"+d;
+        }
+        var optionNodes = this.state.lists.map(function(option){
+                var reply=option.reply==undefined?[]:option.reply;
+                var replyTime=option.reply==undefined?0:formatDate(reply[0].time);
+                var replyUser=option.reply==undefined?"无":reply[0].username;
+
+                return <tr>
+                        <td><img src="" alt=""/></td>
+                        <td><a href={"articleContent?blockNum="+option.blockNum+"&rid="+option.rid}>{option.title}</a></td>
+                        <td>{formatDate(option.time)}</td>
+                        <td>{option.username}</td>
+                        <td>{reply.length}</td>
+                        <td>{replyTime}</td>
+                        <td>{replyUser}</td>
+                    </tr>;
+            });
+
+        return    (<table>
+        <tr >
+            <td>状态</td>
+            <td>主题</td>
+            <td>发帖时间</td>
+            <td>作者</td>
+            <td>回复</td>
+            <td>最新回复</td>
+            <td>作者</td>
+        </tr>
+        {optionNodes}
+    </table>);
+    }
+})
+
+ReactDOM.render(
+<List name="" />,
+ document.getElementById('listContent')
+)
+</script>
 <script>
-/*alert(location.href);*/
+
+$(function(){
+    $("#newTopic").click(function(){
+        location.href="/newTopic?blockNum="+GetQueryString("blockNum")+"&isTopic=1";
+    })
+
+    /*$.ajax({
+        url:"/social/articleList",
+        type:"get",
+        data:{
+            "blockNum":1
+        },
+        success:function(data){
+
+        },
+        error:function(){
+            alert("err");
+        }
+    });*/
+
+
+})
 </script>
 </body>
 </html>

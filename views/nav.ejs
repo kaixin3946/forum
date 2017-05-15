@@ -9,7 +9,7 @@
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
             <a class="navbar-brand logo" href="#">
-                <img src="img/byrlogo.gif" alt=""/>
+                <img src="img/tt_logo.png" alt=""/>
             </a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -29,7 +29,7 @@
         <div class="self-info">
             <h5>
                 <div></div><%if(username!=null){%>
-                     <span><a href="#"><span id=""><span > 欢迎你， <%= username %> </span></span></a></span>
+                     <span><a href="#"><span id="userName"><span > 欢迎你， <%= username %> </span></span></a></span>
                 <%}else{%>
                     <span><a href="login">登录</a></span>
                 <%}%>
@@ -39,7 +39,9 @@
                 <li>@我的文章</li>
                 <li>回复我的文章</li>
                 <li>我的收藏夹</li>
-                <li><a href="#" id="outLogin">退出登录</a></li>
+                <li><%if(username!=null){%>
+                    <a href="#" id="outLogin">退出登录</a>
+                    <%}%></li>
             </ul>
         </div>
         <div class="all-talk">
@@ -76,4 +78,10 @@
              }
          })
      })
+     /* 获取连接中传入的参数 */
+     function GetQueryString(name) {
+         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)","i");
+         var r = window.location.search.substr(1).match(reg);
+         if (r!=null) return (r[2]); return null;
+     }
  </script>

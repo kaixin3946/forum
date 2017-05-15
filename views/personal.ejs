@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>仿byr首页</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/index.css"/>
+    <!--<script src="js/bootstrap.min.js"></script>-->
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <style>
+        #context .r-side{display: flex;}
+    </style>
+</head>
+<body>
+<%- include nav %>
+
+<!--这是<%=  page  %>-->
+<div class="blocks">
+    <div class="block-content">
+        <div class="title">
+            <!-- social -->
+            <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>信息社会
+        </div>
+        <div class="block-inside">
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active"><a href="#">版面列表</a></li>
+                <li role="presentation"><a href="#">热门话题</a></li>
+            </ul>
+            <ul class="info-line" id="social">
+                <!--<li><a id="zhichang" href="">[职场人生]</a><a href=""></a></li>
+                -<li></li>
+                 <li></li>-->
+
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+
+<%- include nav-foot.ejs %>
+<script>
+    $(function(){
+
+
+
+
+    })
+</script>
+</body>
+</html>

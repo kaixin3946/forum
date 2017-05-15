@@ -17,6 +17,8 @@
     "mongodb": "^2.2.25"
   },
   "devDependencies": {
+    "babel-preset-latest": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2"
   }

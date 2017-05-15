@@ -11,6 +11,7 @@
         .lg{width: 100%;}
         .show{display: block;}
         .hide{display: none;}
+        .input-group .input-group-addon{width: 80px;}
     </style>
 </head>
 <body>
@@ -21,12 +22,12 @@
 <ul class="nav nav-tabs">
 
     <li role="presentation" class="btn">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" >
             登录
         </a>
     </li>
     <li role="presentation" class="btn">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" >
             注册
         </a>
     </li>
@@ -55,7 +56,11 @@
         </div>
         <div class="input-group">
             <span class="input-group-addon" id="  ">密码</span>
-            <input type="password" class="form-control" placeholder="password" aria-describedby="basic-addon1" name="pwd" id="pwd2">
+            <input type="password" class="form-control" placeholder="password" aria-describedby="basic-addon1" name="pwd" id="pwd21">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon" id="  ">密码确认</span>
+            <input type="password" class="form-control" placeholder="password" aria-describedby="basic-addon1" name="pwd" id="pwd22">
         </div>
         <div class="input-group">
             <input type="button" class="form-control" value="注册" aria-describedby="basic-addon1" id="zhuce">
@@ -70,11 +75,9 @@
 </div>
 <br><br><br><br>
 
-<div style="display: block;clear: both;margin-top: 20px"></div>
+<!--<div style="display: block;clear: both;margin-top: 20px"></div>
 <div class="panel panel-default col-sm-6">
-    <!-- Default panel contents -->
     <div class="panel-heading">注册列表</div>
-    <!-- Table -->
     <table class="table">
         <% for(var i=0;i<userList.length;i++){ %>
             <tr>
@@ -83,7 +86,7 @@
             </tr>
         <% } %>
     </table>
-</div>
+</div>-->
 
 <%- include nav-foot.ejs %>
 <script>
@@ -114,35 +117,56 @@ $(function(){
             } else if (result.result == 1) {
                 //提交成功
                 html='<div class="alert alert-success" role="alert" style="clear:both"><a href="#" class="alert-link">登录成功</a></div>';
+                if(sessionStorage.getItem("lastPage")){
+                    location.href=sessionStorage.getItem("lastPage");
+                }else{
+                    location.href="index";
+                }
+
             }else if(result.result == 0){
                 html='<div class="alert alert-success" role="alert" style="clear:both"><a href="#" class="alert-link">用户名不存在</a></div>';
             }
 
             $("#registToast").html(html);
-            location.reload();
+
             /*location.assign("index");*/
         });
     });
 
     $("#zhuce").click(function () {
-        $.get("/userregist", {
-            "username": $("#name2").val(),
-            "pwd": $("#pwd2").val()
-        }, function (result) {
-            var html;
-            if (result.result == -1) {
-                html='<div class="alert alert-danger" role="alert" style="clear:both"><a href="#" class="alert-link">注册失败</a></div>';
+        var username=$("#name2").val();
+        var pwd1=$("#pwd21").val();
+        var pwd2=$("#pwd22").val();
 
-            } else if (result.result == 1) {
-                //提交成功
-                html='<div class="alert alert-success" role="alert" style="clear:both"><a href="#" class="alert-link">注册成功</a></div>';
-
-            }else if(result.result == 0){
-                html='<div class="alert alert-success" role="alert" style="clear:both"><a href="#" class="alert-link">用户已经被注册，换个账号</a></div>';
-            }
-
+        if(username==""){
+            var html='<div class="alert alert-danger" role="alert" style="clear:both"><a href="#" class="alert-link">用户名不能为空</a></div>';
             $("#registToast").html(html);
-        });
+        }else if(pwd1!=pwd2){
+            var html='<div class="alert alert-danger" role="alert" style="clear:both"><a href="#" class="alert-link">两次密码输入不一致</a></div>';
+            $("#pwd21").val("");
+            $("#pwd22").val("");
+            $("#registToast").html(html);
+        }else{
+            $.get("/userregist", {
+                "username": username,
+                "pwd": pwd2
+            }, function (result) {
+                var html;
+                if (result.result == -1) {
+                    html='<div class="alert alert-danger" role="alert" style="clear:both"><a href="#" class="alert-link">注册失败</a></div>';
+
+                } else if (result.result == 1) {
+                    //提交成功
+                    html='<div class="alert alert-success" role="alert" style="clear:both"><a href="#" class="alert-link">注册成功</a></div>';
+
+                }else if(result.result == 0){
+                    html='<div class="alert alert-danger" role="alert" style="clear:both"><a href="#" class="alert-link">用户已经被注册，换个账号</a></div>';
+                }
+
+                $("#registToast").html(html);
+            });
+        }
+
     });
 })
 </script>

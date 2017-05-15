@@ -5,7 +5,7 @@
     <title>仿byr首页</title>
     <link rel="stylesheet" href="css/bootstrap.min.css"/>
     <link rel="stylesheet" href="css/index.css"/>
-    <script src="js/bootstrap.min.js"></script>
+    <!--<script src="js/bootstrap.min.js"></script>-->
     <script src="js/jquery-2.1.4.min.js"></script>
     <style>
         #context .r-side{display: flex;}
@@ -26,15 +26,16 @@
                         <li role="presentation" class="active"><a href="#">版面列表</a></li>
                         <li role="presentation"><a href="#">热门话题</a></li>
                     </ul>
-                    <ul class="info-line">
-                        <li id="zhichang"><a href="articleList">[职场人生]</a><a href="">1金杜律师事务所和汉得信息offer求比较求比较求比较求比较求比较</a></li>
-                        <li><a id="kaoyan" href="">[考研专版]</a><a href=""></a></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
+                    <ul class="info-line" id="social">
+                        <!--<li><a id="zhichang" href="">[职场人生]</a><a href=""></a></li>
+                        -<li></li>
+                         <li></li>-->
+                        <% for(var i=0;i<result.length;i++){  %>
+                            <li >
+                                <a href="articleList?blockNum=<%=result[i].blockNum%>">[<%=result[i].blockName%>]</a>
+                                <a href="articleContent?blockNum=<%=result[i].blockNum%>&rid=<%=result[i].latestRid%>"><%=result[i].latestText%></a>
+                            </li>
+                        <%}%>
                     </ul>
                 </div>
             </div>
@@ -45,8 +46,8 @@
                 </div>
                 <div class="block-inside">
                     <ul class="info-line">
-                        <li><a href="">[职场人生]</a><a href="">2金杜律师事务所和汉得信息offer求比较</a></li>
-                        <li><a href="">[考研专版]</a><a href="">2金杜律师事务所和汉得信息offer求比较</a></li>
+                        <li><a href="index">[假假假假]</a><a href="">2金杜律师事务所和汉得信息offer求比较</a></li>
+                        <li><a href="">[假假假假]</a><a href="">2金杜律师事务所和汉得信息offer求比较</a></li>
                         <li></li>
                         <li></li>
                         <li></li>
@@ -65,8 +66,8 @@
                 </div>
                 <div class="block-inside">
                     <ul class="info-line">
-                        <li><a href="">[职场人生]</a><a href="">3金杜律师事务所和汉得信息offer求比较</a></li>
-                        <li><a href="">[考研专版]</a><a href="">3金杜律师事务所和汉得信息offer求比较</a></li>
+                        <li><a href="">[假假假假]</a><a href="">3金杜律师事务所和汉得信息offer求比较</a></li>
+                        <li><a href="">[假假假假]</a><a href="">3金杜律师事务所和汉得信息offer求比较</a></li>
                         <li></li>
                         <li></li>
                         <li></li>
@@ -85,8 +86,8 @@
                 </div>
                 <div class="block-inside">
                     <ul class="info-line">
-                        <li><a href="">[职场人生]</a><a href="">4金杜律师事务所和汉得信息offer求比较</a></li>
-                        <li><a href="">[考研专版]</a><a href="">4金杜律师事务所和汉得信息offer求比较</a></li>
+                        <li><a href="">[假假假假]</a><a href="">4金杜律师事务所和汉得信息offer求比较</a></li>
+                        <li><a href="">[假假假假]</a><a href="">4金杜律师事务所和汉得信息offer求比较</a></li>
                         <li></li>
                         <li></li>
                         <li></li>
@@ -102,12 +103,14 @@
 <%- include nav-foot.ejs %>
 <script>
     $(function(){
+        /*$.get("/social/list",{"blockNum":1}, function (result) {
+             alert("进入考研专版");
+             location.href="articleList.ejs";
+         });*/
+
+
         $("#kaoyan").click(function () {
-            /*$.get("/social/list",{"blockNum":1}, function (result) {
-                alert("进入考研专版");
-                console.log("aaa");
-                location.href="articleList.ejs";
-            });*/
+
             $.ajax({
                 url:"/social/list",
                 data:{
@@ -115,13 +118,16 @@
                 },
                 success:function(data){
                     location.href="articleList?result="+data.result.blockNum;
-                    alert(JSON.stringify(data));
+                    //alert(JSON.stringify(data));
                 },
                 error:function(){
                     alert("err");
                 }
-            }).always(alert("always"));
-        });
+            }).always(alert("跳转"));
+        })
+
+
+
     })
 </script>
 </body>
